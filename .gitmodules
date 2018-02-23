@@ -10,3 +10,6 @@
 [submodule "e310x"]
 	path = e310x
 	url = https://github.com/dvc94ch/e310x
+[submodule "riscv-rust-quickstart"]
+	path = riscv-rust-quickstart
+	url = https://github.com/dvc94ch/riscv-rust-quickstart
