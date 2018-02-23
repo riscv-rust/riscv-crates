@@ -1,0 +1,12 @@
+[submodule "hifive"]
+	path = hifive
+	url = https://github.com/dvc94ch/hifive
+[submodule "riscv-rt"]
+	path = riscv-rt
+	url = https://github.com/dvc94ch/riscv-rt
+[submodule "riscv"]
+	path = riscv
+	url = https://github.com/dvc94ch/riscv
+[submodule "e310x"]
+	path = e310x
+	url = https://github.com/dvc94ch/e310x
