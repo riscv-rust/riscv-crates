@@ -14,3 +14,10 @@ riscv-rust-quickstart = { path = "riscv-rust-quickstart" }
 [profile.release]
 debug = true
 lto = true
+
+[profile.dev]
+debug = true
+lto = true
+# workaround rust-lang/rust#47074
+codegen-units = 1
+incremental = false
