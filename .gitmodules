@@ -1,15 +1,21 @@
 [submodule "hifive"]
 	path = hifive
-	url = https://github.com/dvc94ch/hifive
-[submodule "riscv-rt"]
-	path = riscv-rt
-	url = https://github.com/dvc94ch/riscv-rt
-[submodule "riscv"]
-	path = riscv
-	url = https://github.com/dvc94ch/riscv
+	url = https://github.com/riscv-rust/hifive
 [submodule "e310x"]
 	path = e310x
-	url = https://github.com/dvc94ch/e310x
+	url = https://github.com/riscv-rust/e310x
+[submodule "riscv-rt"]
+	path = riscv-rt
+	url = https://github.com/riscv-rust/riscv-rt
+[submodule "riscv"]
+	path = riscv
+	url = https://github.com/riscv-rust/riscv
+[submodule "riscv-semihosting"]
+	path = riscv-semihosting
+	url = https://github.com/riscv-rust/riscv-semihosting
+[submodule "riscv-alloc"]
+	path = riscv-alloc
+	url = https://github.com/riscv-rust/riscv-alloc
 [submodule "riscv-rust-quickstart"]
 	path = riscv-rust-quickstart
-	url = https://github.com/dvc94ch/riscv-rust-quickstart
+	url = https://github.com/riscv-rust/riscv-rust-quickstart

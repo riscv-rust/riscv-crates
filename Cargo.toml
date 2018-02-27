@@ -9,6 +9,8 @@ authors = ["David Craven <david@craven.ch>"]
 embedded-hal = { git = "https://github.com/japaric/embedded-hal", rev = "7d904f515d15fd5fe7ea34e18820ea83e2651fa2" }
 nb = { git = "https://github.com/japaric/nb" }
 hifive = { path = "hifive" }
+#riscv-alloc = { path = "riscv-alloc" }
+riscv-semihosting = { path = "riscv-semihosting" }
 riscv-rust-quickstart = { path = "riscv-rust-quickstart" }
 
 [profile.release]

@@ -58,6 +58,7 @@ dependencies = [
  "hifive 0.1.0",
  "nb 0.1.1 (git+https://github.com/japaric/nb)",
  "riscv-rust-quickstart 0.1.0",
+ "riscv-semihosting 0.0.1",
 ]
 
 [[package]]
@@ -74,6 +75,10 @@ version = "0.1.0"
 dependencies = [
  "hifive 0.1.0",
 ]
+
+[[package]]
+name = "riscv-semihosting"
+version = "0.0.1"
 
 [[package]]
 name = "vcell"
