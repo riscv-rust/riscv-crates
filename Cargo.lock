@@ -59,6 +59,7 @@ dependencies = [
  "nb 0.1.1 (git+https://github.com/japaric/nb)",
  "riscv-rust-quickstart 0.1.0",
  "riscv-semihosting 0.0.1",
+ "stlog 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -81,6 +82,11 @@ name = "riscv-semihosting"
 version = "0.0.1"
 
 [[package]]
+name = "stlog"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "vcell"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -98,5 +104,6 @@ dependencies = [
 "checksum embedded-hal 0.1.0 (git+https://github.com/japaric/embedded-hal?rev=7d904f515d15fd5fe7ea34e18820ea83e2651fa2)" = "<none>"
 "checksum nb 0.1.1 (git+https://github.com/japaric/nb)" = "<none>"
 "checksum r0 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "e2a38df5b15c8d5c7e8654189744d8e396bddc18ad48041a500ce52d6948941f"
+"checksum stlog 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "3f63cbe462dcc239059ceba21f8e5bccba0de4a258b2ecc81151d0c59df1e301"
 "checksum vcell 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "45c297f0afb6928cd08ab1ff9d95e99392595ea25ae1b5ecf822ff8764e57a0d"
 "checksum volatile-register 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "0d67cb4616d99b940db1d6bd28844ff97108b498a6ca850e5b6191a532063286"

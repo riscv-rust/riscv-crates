@@ -13,6 +13,9 @@ hifive = { path = "hifive" }
 riscv-semihosting = { path = "riscv-semihosting" }
 riscv-rust-quickstart = { path = "riscv-rust-quickstart" }
 
+[dev-dependencies]
+stlog = "^0.2.0"
+
 [profile.release]
 debug = true
 lto = true

@@ -7,6 +7,7 @@
 #EXAMPLE      := panicking
 #EXAMPLE      := pll
 #EXAMPLE      := semihosting
+#EXAMPLE      := stlog
 
 # Board crate (uncomment one)
 BOARD        := hifive
@@ -19,6 +20,9 @@ TARGET       := riscv32imac-unknown-none
 TARGET_DIR   := $(abspath ./target/$(TARGET)/debug)
 EXAMPLE_DIR  := $(TARGET_DIR)/examples
 EXAMPLE_BIN  := $(EXAMPLE_DIR)/$(EXAMPLE)
+
+BAUD_RATE := 115200
+TTY := /dev/ttyUSB2
 
 build:
 	xargo build --examples --target $(TARGET) $(ARGS)
@@ -37,6 +41,10 @@ objdump:
 
 size:
 	llvm-size $(EXAMPLE_BIN) $(ARGS)
+
+stcat:
+	stty -F $(TTY) $(BAUD_RATE) sane -opost -brkint -icrnl -isig -icanon -iexten -echo
+	cat $(TTY) | stcat -e $(EXAMPLE_BIN)
 
 # .gdbinit adds a upload command to gdb
 gdb:

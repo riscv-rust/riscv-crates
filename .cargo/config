@@ -3,5 +3,6 @@ runner = 'riscv32-unknown-elf-gdb'
 rustflags = [
   "-C", "link-arg=-Tmemory.x",
   "-C", "link-arg=-Tlink.x",
+  "-C", "link-arg=-Tstlog.x",
   "-C", "linker=riscv32-unknown-elf-ld",
 ]
