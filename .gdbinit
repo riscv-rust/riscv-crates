@@ -1,5 +1,6 @@
 set remotetimeout 240
 target extended-remote localhost:3333
+monitor arm semihosting enable
 
 define upload
   monitor reset halt
