@@ -6,15 +6,19 @@
 #EXAMPLE      := hello_world
 #EXAMPLE      := panicking
 #EXAMPLE      := pll
+#EXAMPLE      := semihosting
 
 # Board crate (uncomment one)
 BOARD        := hifive
+
+# OpenOCD configuration (uncomment one)
+#OPENOCD_CFG  := hifive-openocd.cfg
+#OPENOCD_CFG  := lofive-openocd.cfg
 
 TARGET       := riscv32imac-unknown-none
 TARGET_DIR   := $(abspath ./target/$(TARGET)/debug)
 EXAMPLE_DIR  := $(TARGET_DIR)/examples
 EXAMPLE_BIN  := $(EXAMPLE_DIR)/$(EXAMPLE)
-OPENOCD_CFG  := openocd.cfg
 
 build:
 	xargo build --examples --target $(TARGET) $(ARGS)
