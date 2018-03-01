@@ -6,10 +6,10 @@ use hifive::prelude::*;
 use hifive::{interrupt, led, Blue, Clint, Peripherals, UExt};
 
 fn main() {
-    let peripherals = hifive::init(115_200);
-    led::init(peripherals.GPIO0);
+    let p = Peripherals::take().unwrap();
+    led::init(&p.GPIO0);
 
-    let timer = Clint(peripherals.CLINT);
+    let timer = Clint(&p.CLINT);
     timer.set_timeout(1.s());
 
     unsafe {
@@ -19,6 +19,6 @@ fn main() {
 
 #[no_mangle]
 pub fn mtimer_trap_handler(p: &Peripherals) {
-    Clint(p.CLINT).restart();
-    Blue::toggle(p.GPIO0);
+    Clint(&p.CLINT).restart();
+    Blue::toggle(&p.GPIO0);
 }

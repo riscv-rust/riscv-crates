@@ -3,17 +3,18 @@
 extern crate hifive;
 
 use core::fmt::Write;
-use hifive::{clock, Clint, Port, Serial};
+use hifive::{clock, Peripherals, Clint, Port, Serial, UExt};
 
 fn main() {
-    let p = hifive::init(115_200);
+    let p = Peripherals::take().unwrap();
 
-    let serial = Serial(p.UART0);
+    let serial = Serial(&p.UART0);
+    serial.init(115_200.hz().invert(), &p.GPIO0);
     let mut stdout = Port(&serial);
     writeln!(stdout, "Setting up PLL").unwrap();
 
-    let clint = Clint(p.CLINT);
-    let clock = clock::CoreClock(p.PRCI);
+    let clint = Clint(&p.CLINT);
+    let clock = clock::CoreClock(&p.PRCI);
 
     let freq_calc_default = clock.pll_mult() * 16;
     unsafe { clock.use_pll(&clint); }

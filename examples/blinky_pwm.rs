@@ -2,7 +2,7 @@
 
 extern crate hifive;
 
-use hifive::{Channel, Align, Pwm};
+use hifive::{Peripherals, Channel, Align, Pwm};
 
 const RED: Channel = Channel::_3;
 const GREEN: Channel = Channel::_1;
@@ -29,25 +29,24 @@ fn set_color(pwm: Pwm<PWM1>, color: Color) {
 */
 
 fn main() {
-    let peripherals = hifive::init(115_200);
-    let gpio = peripherals.GPIO0;
+    let p = Peripherals::take().unwrap();
 
     //let clint = Clint(peripherals.CLINT);
-    let pwm = Pwm(peripherals.PWM1);
+    let pwm = Pwm(&p.PWM1);
 
     pwm.set_cmp(Channel::_0, u16::max_value());
     //pwm.set_period(63);
 
-    pwm.enable(RED, Align::Left, gpio);
-    pwm.invert(RED, gpio);
+    pwm.enable(RED, Align::Left, &p.GPIO0);
+    pwm.invert(RED, &p.GPIO0);
     pwm.set_cmp(RED, u16::max_value() / 3);
 
-    pwm.enable(GREEN, Align::Center, gpio);
-    pwm.invert(GREEN, gpio);
+    pwm.enable(GREEN, Align::Center, &p.GPIO0);
+    pwm.invert(GREEN, &p.GPIO0);
     pwm.set_cmp(GREEN, u16::max_value() / 2);
 
-    pwm.enable(BLUE, Align::Right, gpio);
-    pwm.invert(BLUE, gpio);
+    pwm.enable(BLUE, Align::Right, &p.GPIO0);
+    pwm.invert(BLUE, &p.GPIO0);
     pwm.set_cmp(BLUE, u16::max_value() / 3 * 2);
 
     pwm.init();

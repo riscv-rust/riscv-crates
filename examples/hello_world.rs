@@ -3,11 +3,13 @@
 extern crate hifive;
 
 use core::fmt::Write;
-use hifive::{Port, Serial};
+use hifive::{Peripherals, Port, Serial, UExt};
 
 fn main() {
-    let peripherals = hifive::init(115_200);
+    let p = Peripherals::take().unwrap();
 
-    let serial = Serial(peripherals.UART0);
+    let serial = Serial(&p.UART0);
+    serial.init(115_200.hz().invert(), &p.GPIO0);
+
     writeln!(Port(&serial), "hello world!").unwrap();
 }

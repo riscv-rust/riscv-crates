@@ -5,7 +5,7 @@ extern crate nb;
 extern crate hifive;
 
 use hifive::prelude::*;
-use hifive::{led, Red, Green, Blue, Clint, UExt};
+use hifive::{led, Peripherals, Red, Green, Blue, Clint, UExt};
 
 fn delay(clint: &Clint) {
     block!(clint.wait()).unwrap();
@@ -13,22 +13,21 @@ fn delay(clint: &Clint) {
 }
 
 fn main() {
-    let peripherals = hifive::init(115_200);
-    led::init(peripherals.GPIO0);
+    let p = Peripherals::take().unwrap();
+    led::init(&p.GPIO0);
 
-    let clint = Clint(peripherals.CLINT);
+    let clint = Clint(&p.CLINT);
     clint.set_timeout(500.ms());
 
-    let gpio = peripherals.GPIO0;
     loop {
-        Red::on(gpio);
+        Red::on(&p.GPIO0);
         delay(&clint);
-        Red::off(gpio);
-        Green::on(gpio);
+        Red::off(&p.GPIO0);
+        Green::on(&p.GPIO0);
         delay(&clint);
-        Green::off(gpio);
-        Blue::on(gpio);
+        Green::off(&p.GPIO0);
+        Blue::on(&p.GPIO0);
         delay(&clint);
-        Blue::off(gpio);
+        Blue::off(&p.GPIO0);
     }
 }

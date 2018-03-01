@@ -10,5 +10,5 @@ fn main() {
     static MSG: &'static [u8] = b"Hello, world!\n";
 
     // Signature: fn write(fd: usize, ptr: *const u8, len: usize) -> usize
-    let r = unsafe { syscall!(WRITE, STDOUT, MSG.as_ptr(), MSG.len()) };
+    let _r = unsafe { syscall!(WRITE, STDOUT, MSG.as_ptr(), MSG.len()) };
 }

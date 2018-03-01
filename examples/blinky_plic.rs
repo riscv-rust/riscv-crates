@@ -5,24 +5,27 @@ extern crate hifive;
 use core::fmt::Write;
 use hifive::*;
 use hifive::prelude::*;
+use hifive::{Peripherals, Interrupt, UExt};
 use hifive::interrupt::Nr;
 
 fn main() {
-    let p = hifive::init(115_200);
-    led::init(p.GPIO0);
+    let p = hifive::Peripherals::take().unwrap();
+    led::init(&p.GPIO0);
 
-    Red::on(p.GPIO0);
+    Red::on(&p.GPIO0);
 
-    let plic = Plic(p.PLIC);
+    let plic = Plic(&p.PLIC);
     plic.init();
 
-    RtcConf::new().end(p.RTC);
-    Rtc(p.RTC).set_timeout(500.ms());
+    RtcConf::new().end(&p.RTC);
+    Rtc(&p.RTC).set_timeout(500.ms());
 
     plic.set_priority(Interrupt::RTC, Priority::P7);
     plic.enable(Interrupt::RTC);
 
-    let serial = Serial(p.UART0);
+    let serial = Serial(&p.UART0);
+    serial.init(115_200.hz().invert(), &p.GPIO0);
+
     let mut stdout = Port(&serial);
     writeln!(stdout, "External interrupts enabled: {}",
              csr::mie.read().mext()).unwrap();
@@ -46,8 +49,8 @@ fn main() {
 pub fn plic_trap_handler(p: &Peripherals, intr: &Interrupt) {
     match *intr {
         Interrupt::RTC => {
-            Rtc(p.RTC).restart();
-            Blue::toggle(p.GPIO0);
+            Rtc(&p.RTC).restart();
+            Blue::toggle(&p.GPIO0);
         },
         _ => {},
     }
