@@ -6,15 +6,16 @@ authors = ["David Craven <david@craven.ch>"]
 [workspace]
 
 [dependencies]
-embedded-hal = { git = "https://github.com/japaric/embedded-hal", rev = "7d904f515d15fd5fe7ea34e18820ea83e2651fa2" }
-nb = { git = "https://github.com/japaric/nb" }
+nb = "0.1.1"
+e310x-hal = { path = "e310x-hal" }
 hifive = { path = "hifive" }
 #riscv-alloc = { path = "riscv-alloc" }
 riscv-semihosting = { path = "riscv-semihosting" }
 riscv-rust-quickstart = { path = "riscv-rust-quickstart" }
 
 [dev-dependencies]
-stlog = "^0.2.0"
+riscv = { path = "riscv" }
+stlog = "0.2.0"
 
 [profile.release]
 debug = true
