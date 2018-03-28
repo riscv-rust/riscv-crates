@@ -17,7 +17,7 @@ end
 python
 import os;
 import sys;
-path = os.environ['TOOLCHAIN'] + '/lib/rustlib/etc'
+path = '/opt/rust/lib/rustlib/etc'
 sys.path.append(path)
 
 gdb.execute('directory %s' % path)
