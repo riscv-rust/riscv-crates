@@ -7,23 +7,33 @@ authors = ["David Craven <david@craven.ch>"]
 
 [dependencies]
 nb = "0.1.1"
+riscv = { path = "riscv" }
+riscv-rt = { path = "riscv-rt" }
+e310x = { path = "e310x" }
 e310x-hal = { path = "e310x-hal" }
 hifive = { path = "hifive" }
+riscv-rtfm = { path = "riscv-rtfm" }
 #riscv-alloc = { path = "riscv-alloc" }
 riscv-semihosting = { path = "riscv-semihosting" }
 riscv-rust-quickstart = { path = "riscv-rust-quickstart" }
 
 [dev-dependencies]
-riscv = { path = "riscv" }
+numtoa = "0.0.7"
+spin = "0.4.7"
 stlog = "0.2.0"
 
 [profile.release]
+opt-level = 3
 debug = true
 lto = true
+# workaround rust-lang/rust#47074
+codegen-units = 1
+incremental = false
 
 [profile.dev]
+opt-level = 0
 debug = true
-lto = true
+lto = false
 # workaround rust-lang/rust#47074
 codegen-units = 1
 incremental = false
