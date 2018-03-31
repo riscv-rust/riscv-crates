@@ -22,3 +22,6 @@
 [submodule "e310x-hal"]
 	path = e310x-hal
 	url = https://github.com/riscv-rust/e310x-hal
+[submodule "riscv-rtfm"]
+	path = riscv-rtfm
+	url = https://github.com/riscv-rust/riscv-rtfm
