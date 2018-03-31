@@ -2,27 +2,34 @@
 
 extern crate hifive;
 
-use core::fmt::Write;
-use hifive::{clock, Peripherals, Clint, Port, Serial, UExt};
+use hifive::hal::prelude::*;
+use hifive::hal::e310x;
+use hifive::hal::stdout::*;
 
 fn main() {
-    let p = Peripherals::take().unwrap();
+    let p = e310x::Peripherals::take().unwrap();
 
-    let serial = Serial(&p.UART0);
-    serial.init(115_200.hz().invert(), &p.GPIO0);
-    let mut stdout = Port(&serial);
-    writeln!(stdout, "Setting up PLL").unwrap();
+    // Setup clocks
+    let clint = p.CLINT.split();
+    let clocks = Clocks::freeze(p.PRCI.constrain().use_pll(),
+                                p.AONCLK.constrain(),
+                                &clint.mtime);
 
-    let clint = Clint(&p.CLINT);
-    let clock = clock::CoreClock(&p.PRCI);
+    // Setup serial
+    let mut gpio = p.GPIO0.split();
+    let (tx, rx) = hifive::tx_rx(
+        gpio.pin17,
+        gpio.pin16,
+        &mut gpio.out_xor,
+        &mut gpio.iof_sel,
+        &mut gpio.iof_en,
+    );
+    let serial = Serial::uart0(p.UART0, (tx, rx), 115_200.bps(), clocks);
+    let (mut tx, _) = serial.split();
+    let mut stdout = Stdout(&mut tx);
 
-    let freq_calc_default = clock.pll_mult() * 16;
-    unsafe { clock.use_pll(&clint); }
-    let freq_calc = clock.pll_mult() * 16;
-    let freq_measured = clock.measure(&clint) / 1_000_000;
-    unsafe { clock.use_external(&clint); }
-
-    writeln!(stdout, "Default PLL settings {}MHz", freq_calc_default).unwrap();
-    writeln!(stdout, "Measured clock frequency of {}MHz", freq_measured).unwrap();
-    writeln!(stdout, "Computed clock frequency of {}MHz", freq_calc).unwrap();
+    writeln!(stdout, "Measured clock frequency of {}MHz",
+             clocks.measure_coreclk(&clint.mtime, &clint.mcycle).0 / 1_000_000).unwrap();
+    writeln!(stdout, "Computed clock frequency of {}MHz",
+             clocks.coreclk().0 / 1_000_000).unwrap();
 }

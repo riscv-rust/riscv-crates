@@ -2,13 +2,16 @@
 
 extern crate hifive;
 
+fn main() {}
+
+/*
+
 use hifive::{Peripherals, Channel, Align, Pwm};
 
 const RED: Channel = Channel::_3;
 const GREEN: Channel = Channel::_1;
 const BLUE: Channel = Channel::_2;
 
-/*
 struct Color {
     red: u8,
     green: u8,
@@ -26,7 +29,6 @@ fn set_color(pwm: Pwm<PWM1>, color: Color) {
     pwm.set_cmp(GREEN, u16::max_value() / 255 * color.green as u16);
     pwm.set_cmp(BLUE, u16::max_value() / 255 * color.blue as u16);
 }
-*/
 
 fn main() {
     let p = Peripherals::take().unwrap();
@@ -53,7 +55,7 @@ fn main() {
 
     //let delay = 1.s();
 
-    /*loop {
+    loop {
         // Gray
         set_color(pwm, Color::from(0x80, 0x80, 0x80));
         clint.set_timeout(delay);
@@ -66,7 +68,7 @@ fn main() {
         set_color(pwm, Color::from(0x80, 0x00, 0x00));
         clint.set_timeout(delay);
         block!(clint.wait());
-    }*/
+    }
 
     //pwm.invert(GREEN, gpio, true);
     //pwm.align_center(GREEN);
@@ -78,3 +80,4 @@ fn main() {
     //pwm.set_cmp(BLUE, 0);
     //pwm.enable(BLUE, gpio);
 }
+*/

@@ -1,33 +1,55 @@
 #![no_std]
 
-#[macro_use]
-extern crate nb;
+//#[macro_use]
+//extern crate nb;
 extern crate hifive;
 
-use hifive::prelude::*;
-use hifive::{led, Peripherals, Red, Green, Blue, Clint, UExt};
+use hifive::hal::prelude::*;
+use hifive::hal::e310x;
+use hifive::led::{Led, RED, GREEN, BLUE};
 
-fn delay(clint: &Clint) {
-    block!(clint.wait()).unwrap();
-    clint.restart();
+fn delay() {
+    //block!(clint.wait()).unwrap();
+    //clint.restart();
+    for _i in 0..10000 {
+
+    }
 }
 
 fn main() {
-    let p = Peripherals::take().unwrap();
-    led::init(&p.GPIO0);
+    let p = e310x::Peripherals::take().unwrap();
+    let mut gpio = p.GPIO0.split();
+    let mut red: RED = gpio.pin22.into_inverted_output(
+        &mut gpio.output_en,
+        &mut gpio.drive,
+        &mut gpio.out_xor,
+        &mut gpio.iof_en
+    );
+    let mut green: GREEN = gpio.pin19.into_inverted_output(
+        &mut gpio.output_en,
+        &mut gpio.drive,
+        &mut gpio.out_xor,
+        &mut gpio.iof_en
+    );
+    let mut blue: BLUE = gpio.pin21.into_inverted_output(
+        &mut gpio.output_en,
+        &mut gpio.drive,
+        &mut gpio.out_xor,
+        &mut gpio.iof_en
+    );
 
-    let clint = Clint(&p.CLINT);
-    clint.set_timeout(500.ms());
+    //let clint = Clint(&p.CLINT);
+    //clint.set_timeout(500.ms());
 
     loop {
-        Red::on(&p.GPIO0);
-        delay(&clint);
-        Red::off(&p.GPIO0);
-        Green::on(&p.GPIO0);
-        delay(&clint);
-        Green::off(&p.GPIO0);
-        Blue::on(&p.GPIO0);
-        delay(&clint);
-        Blue::off(&p.GPIO0);
+        red.on();
+        delay();
+        red.off();
+        green.on();
+        delay();
+        green.off();
+        blue.on();
+        delay();
+        blue.off();
     }
 }

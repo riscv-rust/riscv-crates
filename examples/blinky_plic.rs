@@ -1,32 +1,51 @@
 #![no_std]
 
+extern crate riscv;
 extern crate hifive;
 
-use core::fmt::Write;
-use hifive::*;
-use hifive::prelude::*;
-use hifive::{Peripherals, Interrupt, UExt};
-use hifive::interrupt::Nr;
+use hifive::hal::prelude::*;
+use hifive::hal::e310x;
+use hifive::hal::stdout::*;
+use riscv::interrupt;
 
 fn main() {
-    let p = hifive::Peripherals::take().unwrap();
-    led::init(&p.GPIO0);
+    let p = e310x::Peripherals::take().unwrap();
 
-    Red::on(&p.GPIO0);
+    let clint = p.CLINT.split();
+    let clocks = Clocks::freeze(p.PRCI.constrain(),
+                                p.AONCLK.constrain(),
+                                &clint.mtime);
+    let mut gpio = p.GPIO0.split();
+    let (tx, rx) = hifive::tx_rx(
+        gpio.pin17,
+        gpio.pin16,
+        &mut gpio.out_xor,
+        &mut gpio.iof_sel,
+        &mut gpio.iof_en,
+    );
+    let (_red, _green, _blue) = hifive::rgb(
+        gpio.pin22,
+        gpio.pin19,
+        gpio.pin21,
+        &mut gpio.output_en,
+        &mut gpio.drive,
+        &mut gpio.out_xor,
+        &mut gpio.iof_en,
+    );
 
-    let plic = Plic(&p.PLIC);
-    plic.init();
+    let serial = Serial::uart0(p.UART0, (tx, rx), 115_200.bps(), clocks);
+    let (mut tx, _) = serial.split();
+    let _stdout = Stdout(&mut tx);
 
-    RtcConf::new().end(&p.RTC);
-    Rtc(&p.RTC).set_timeout(500.ms());
+    //let plic = Plic(&p.PLIC);
+    //plic.init();
 
+    //RtcConf::new().end(&p.RTC);
+    //Rtc(&p.RTC).set_timeout(500.ms());
+    /*
     plic.set_priority(Interrupt::RTC, Priority::P7);
     plic.enable(Interrupt::RTC);
 
-    let serial = Serial(&p.UART0);
-    serial.init(115_200.hz().invert(), &p.GPIO0);
-
-    let mut stdout = Port(&serial);
     writeln!(stdout, "External interrupts enabled: {}",
              csr::mie.read().mext()).unwrap();
     let threshold: u32 = plic.get_threshold().into();
@@ -38,14 +57,14 @@ fn main() {
              plic.is_enabled(Interrupt::RTC)).unwrap();
     let priority: u32 = plic.get_priority(Interrupt::RTC).into();
     writeln!(stdout, "RTC interrupt priority: {}",
-             priority).unwrap();
+             priority).unwrap();*/
 
     unsafe {
         interrupt::enable();
     }
 }
 
-#[no_mangle]
+/*#[no_mangle]
 pub fn plic_trap_handler(p: &Peripherals, intr: &Interrupt) {
     match *intr {
         Interrupt::RTC => {
@@ -54,4 +73,4 @@ pub fn plic_trap_handler(p: &Peripherals, intr: &Interrupt) {
         },
         _ => {},
     }
-}
+}*/
