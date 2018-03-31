@@ -8,14 +8,18 @@
 #EXAMPLE      := pll
 #EXAMPLE      := semihosting
 #EXAMPLE      := stlog
+EXAMPLE      := rtfm
+#EXAMPLE      := static_mut
 
 # Board crate (uncomment one)
 BOARD        := hifive
+#BOARD        := lofive
 
 # OpenOCD configuration (uncomment one)
-#OPENOCD_CFG  := hifive-openocd.cfg
+OPENOCD_CFG  := hifive-openocd.cfg
 #OPENOCD_CFG  := lofive-openocd.cfg
 
+TARGET       := riscv32ia-unknown-none
 TARGET_DIR   := $(abspath ./target/$(TARGET)/debug)
 EXAMPLE_DIR  := $(TARGET_DIR)/examples
 EXAMPLE_BIN  := $(EXAMPLE_DIR)/$(EXAMPLE)
@@ -35,11 +39,14 @@ clean:
 readelf:
 	llvm-readelf -a -h -s -r -symbols $(EXAMPLE_BIN) $(ARGS)
 
+size:
+	llvm-size $(EXAMPLE_BIN) $(ARGS)
+
 objdump:
 	llvm-objdump -d -S $(EXAMPLE_BIN) $(ARGS)
 
-size:
-	llvm-size $(EXAMPLE_BIN) $(ARGS)
+dwarfdump:
+	llvm-dwarfdump -verify $(EXAMPLE_BIN) $(ARGS) | grep error | wc -l
 
 stcat:
 	stty -F $(TTY) $(BAUD_RATE) sane -opost -brkint -icrnl -isig -icanon -iexten -echo
@@ -56,7 +63,4 @@ upload:
 	openocd -f $(OPENOCD_CFG) \
 		-c "flash protect 0 64 last off; program ${EXAMPLE_BIN}; resume 0x20400000; exit"
 
-framedump:
-	riscv32-unknown-elf-readelf --debug-dump=frames $(EXAMPLE_BIN) $(ARGS)
-
-.PHONY: build clean readelf objdump framedump size gdb openocd spike
+.PHONY: build test clean readelf size objdump dwarfdump gdb openocd upload
