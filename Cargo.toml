@@ -13,6 +13,7 @@ e310x = { path = "e310x" }
 e310x-hal = { path = "e310x-hal" }
 hifive = { path = "hifive" }
 riscv-rtfm = { path = "riscv-rtfm" }
+riscv-rtfm-macros = { path = "riscv-rtfm/macros" }
 #riscv-alloc = { path = "riscv-alloc" }
 riscv-semihosting = { path = "riscv-semihosting" }
 riscv-rust-quickstart = { path = "riscv-rust-quickstart" }

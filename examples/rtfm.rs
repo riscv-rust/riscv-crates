@@ -1,15 +1,18 @@
 #![no_std]
-#![feature(proc_macro)]
+#![feature(proc_macro_gen)]
+#![feature(use_extern_macros)]
+#![feature(extern_prelude)]
 
 extern crate riscv;
 extern crate hifive;
 extern crate riscv_rtfm as rtfm;
+extern crate riscv_rtfm_macros as rtfm_macros;
 #[macro_use]
 extern crate riscv_semihosting;
 extern crate numtoa;
 
 use hifive::hal::prelude::*;
-use rtfm::{app, Threshold, Resource};
+use rtfm::{Threshold, Resource};
 use riscv::register::{mcause, mepc};
 use hifive::hal::plic::Priority;
 use numtoa::NumToA;
@@ -41,7 +44,7 @@ macro_rules! debug_print_numtoa {
     }
 }
 
-app! {
+rtfm_macros::app! {
     device: hifive::hal::e310x,
 
     resources: {
