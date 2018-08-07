@@ -19,7 +19,7 @@ BOARD        := hifive
 OPENOCD_CFG  := hifive-openocd.cfg
 #OPENOCD_CFG  := lofive-openocd.cfg
 
-TARGET       := riscv32ia-unknown-none
+TARGET       := riscv32imac-unknown-none-elf
 TARGET_DIR   := $(abspath ./target/$(TARGET)/debug)
 EXAMPLE_DIR  := $(TARGET_DIR)/examples
 EXAMPLE_BIN  := $(EXAMPLE_DIR)/$(EXAMPLE)
@@ -28,7 +28,7 @@ BAUD_RATE := 115200
 TTY := /dev/ttyUSB2
 
 build:
-	xargo build --examples $(ARGS)
+	cargo build --examples $(ARGS)
 
 test:
 	xargo test --all $(ARGS)
